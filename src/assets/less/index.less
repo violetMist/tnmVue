@@ -1,0 +1,75 @@
+.home, .line, .rack, .topo, .user, .device, .base, .list, .stat, .pref, .camera, .log{
+    .navbar, .bg{ 
+    	display: block; 
+    }
+    .bg{ 
+    	background: url(../images/bg/bg.png) #022b4b no-repeat 0 0;
+    }
+}
+.navbar, .bg{ 
+    position: fixed; 
+    left: 0; 
+    top: 0; 
+    right: 0;
+	display: none;
+}
+.bg{ 
+	bottom: 0; 
+	z-index: -5000;
+}
+
+.nv-title{
+    height: 35px;
+    line-height: 35px;
+    background: #00A1D8;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    text-align: left;
+    padding-left: 15px;
+}
+
+
+/* 过渡和动画 */
+//页面切换过渡
+.fade-transition{
+    transition: opacity 0.8s;
+}
+.fade-enter, .fade-leave{ 
+    opacity: 0;
+}
+//dialog || confirm弹出过渡
+.dialog-confirm-transition{
+    transition: all 0.5s ease;
+}
+.dialog-confirm-enter ,.dialog-confirm-leave {
+    opacity: 0;
+    .nv-dialog-inner, .nv-confirm-inner, .store-dialog{
+        transform: scale(0.85); 
+    }
+}
+
+//tree的展开 和pointer状态
+.collapse-transition {
+    transition: all .5s ease;
+    overflow: hidden;
+}
+.collapse-enter, .collapse-leave {
+    max-height: 0!important;
+}
+.t-node{
+    cursor: pointer;
+    line-height: 2.5em;
+}
+
+
+.keyframes(@name; @arguments) {
+    @-moz-keyframes @name { @arguments(); }
+    @-webkit-keyframes @name { @arguments(); }
+    @keyframes @name { @arguments(); }
+}
+
+.animation(@arguments) {
+    -webkit-animation: @arguments;
+    -moz-animation: @arguments;
+    animation: @arguments;
+}

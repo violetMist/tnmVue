@@ -1,0 +1,125 @@
+.entry{
+	.bg {
+		background: url(../../assets/images/bg/entrybg.png) no-repeat 0 0; 
+		display: block;
+	}
+	.container{
+		position:absolute; 
+		left: 215px; 
+		bottom: 300px;
+		.pic_top{
+			min-width:736px;
+		}
+		.pic-ico{
+			width: 84px;
+			height: 84px;
+			display: inline-block;
+			background: url(../images/logo/entry-logo0.png);
+		}
+		.pic_char{
+			width:612px; 
+			height:90px; 
+			margin-left:20px; 
+			display: inline-block;
+			vertical-align:top; 
+			background: url(../images/logo/entry-logo.png) no-repeat 0 0;
+		}
+	}
+	ul{
+		width:330px; 
+		height:104px; 
+		margin-top:50px;
+	}
+	li{
+		width:330px; 
+		height:42px; 
+		margin-top:10px; 
+		line-height:42px; 
+		background: url(../images/pic/entry-input.png) no-repeat 0 0;
+		.pic-user, .pic-pwd{
+			width: 20px; 
+			height: 20px; 
+			display: inline-block; 
+			margin: 10px 5px 10px 10px;
+		}
+		.pic-user{
+			background: url(../images/pic/entry-account.png) no-repeat 0 0;
+		}
+		.pic-pwd{
+			background: url(../images/pic/entry-pwd.png) no-repeat 0 0;
+		}
+		.verLine{
+			width: 1px; 
+			height: 14px; 
+			display: inline-block; 
+			background-color: #333; 
+			vertical-align: top; 
+			margin-top: 13px;
+		}
+		input{
+			line-height: 42px; 
+			margin-left: 10px; 
+			width: 275px; 
+			height: 42px; 
+			background-color: transparent; 
+			color: #fff; 
+			vertical-align: top; 
+			border: none;
+		}
+		input::-ms-clear{
+			display: none;
+		}
+		::-ms-reveal{
+			display: none;
+		}
+	}
+	li.focus{
+		background: url(../images/pic/entry-input-hover.png) no-repeat 0 0; 
+		color: #303b47;
+		input{
+			color: #555;
+		}
+		.pic-user{
+			background: url(../images/pic/entry-account-hover.png) no-repeat 0 0;
+		}
+		.pic-pwd{
+			background: url(../images/pic/entry-pwd-hover.png) no-repeat 0 0;
+		}
+	}
+	.submit{
+		width: 330px; 
+		height: 42px; 
+		padding: 0; 
+		color: #fff; 
+		font-size: 18px; 
+		margin-top: 15px;
+		text-align: center;
+		vertical-align: middle; 
+		line-height: 42px; 
+		background: url(../images/pic/entry-btn.png) no-repeat 0 0;
+		span{
+			font-family: "微软雅黑";
+		}
+	}
+	.submit:hover{
+		background: url(../images/pic/entry-btn-hover.png) no-repeat 0 0;
+	}
+	.footer{
+		width: 100%; 
+		height: 56px; 
+		position: fixed; 
+		bottom: 0; 
+		left: 0;
+		right: 0;
+		z-index: 2; 
+		text-align: center; 
+		background: url(../images/bg/entry-foot-bg.png) repeat-x;
+		.footer-bar {
+			display:block; 
+			height:56px; 
+			width:360px; 
+			margin:0 auto; 
+			background: url(../images/logo/entry-foot.png) no-repeat;
+		}
+	}
+}

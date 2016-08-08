@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CCTV网管系统</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../src/assets/images/bg/favicon.ico" media="screen" />
+    <link rel="stylesheet" href="/dist/style.css">
+    <script type="text/javascript">
+        var TNM_BaseUrl = "http://localhost/Ayz/tnmVue";
+        if ("TNMBaseUrl" in parent)
+            TNM_BaseUrl = parent.TNMBaseUrl;
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <nav-header></nav-header>
+        <side-bar></side-bar>
+        <router-view></router-view>
+    </div>
+    <script src="/dist/common.js"></script>
+    <script src="/dist/build.js"></script>
+</body>
+
+</html>
