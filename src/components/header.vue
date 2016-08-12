@@ -41,7 +41,7 @@
 				this.confirm.txt = '确定退出系统？';
 			},
 			confirmOk () {
-				TCM.Global.common('logout', {}, () => {
+				TNM.Global.common('logout', {}, () => {
 					window.logoutView();
 				});
 			}

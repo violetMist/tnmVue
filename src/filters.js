@@ -60,33 +60,7 @@ exports.getDaysStr = (days) => {
 
 exports.getGridValue = (key, value, clz, title) => {
     const Const = window.getConst();
-    const CustomSysLine = (key, value) => {
-        switch (key) {
-            case 'type':
-                return Const.Const.SiteTypeNamesHT[value];
-                break;
-            case 'selected':
-                return value ? (title ? '管辖': '<span class="tick"></span>') : '';
-                break;
-            default:
-                return value;
-                break;
-        }
-    };
-    const CustomUserRole = (key, value) => {
-        switch (key) {
-            case 'siteType':
-                return Const.Const.SiteTypeNamesHT[value];
-                break;
-            case 'promptable':
-                return value ? '允许' : '';
-                break;
-            default:
-                return value;
-                break;
-        }
-    };
-    const CustomUserUser = (key, value) => {
+    const CustomSysUser = (key, value) => {
         switch (key) {
             case 'type':
                 return Const.Const.UserTypeNamesHT[value];
@@ -96,15 +70,41 @@ exports.getGridValue = (key, value, clz, title) => {
                 break;
         }
     };
+    const CustomFaultList = (key, value) => {
+        switch (key) {
+            case 'level':
+                return value == 1 ? '一般': '严重';
+                break;
+            case 'time': 
+                return utils.fmtDate(new Date(value),'yyyy-MM-dd hh:mm:ss');
+                break;
+            case 'status':
+                return value ? (title ? '处理': '<span class="handle"></span>') : '已处理';
+                break;
+            default:
+                return value;
+                break;
+        }
+    };
+    const CustomCameraList = (key, value) => {
+        switch (key) {
+            case 'status':
+                return value == 1 ? '在线': '离线';
+                break;
+            default:
+                return value;
+                break;
+        }
+    };
     switch (clz) {
-        case 'sys-line':
-            return CustomSysLine(key, value);
+        case 'sys-user':
+            return CustomSysUser(key, value);
             break;
-        case 'user-role':
-            return CustomUserRole(key, value);
+        case 'fault-grid':
+            return CustomFaultList(key, value);
             break;
-        case 'user-user':
-            return CustomUserUser(key, value);
+        case 'camera-grid':
+            return CustomCameraList(key, value);
             break;
         default:
             return value;
@@ -184,6 +184,8 @@ exports.getDialogTitle = (key, value, clz) => {
         switch (key) {
             case 'name':
                 return '设备名称';
+            case 'typeName':
+                return '设备类型';
             default:
                 return value;
         }

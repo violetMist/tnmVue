@@ -39,7 +39,7 @@
 				};
 			},
 			clickFn (site) {
-				this.$router.go({name: 'rack', params: {siteId: 123}});
+				this.$router.go({name: 'rack', query: {siteId: site.id}});
 			},
 			overFn (site) {
 				this.one = _.cloneDeep(site);

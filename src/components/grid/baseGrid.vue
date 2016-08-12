@@ -24,7 +24,7 @@
 		</li>
 	</ul>
 	<div class="g-body">
-		<ul class="row" v-for="item of items" track-by="id">
+		<ul class="row" v-for="item of items" track-by="id" @click="clickRow(item)">
 			<li class="col-_check" v-if="hasCheckbox">
 				<checkbox @selected="checkFn" :selected="selected(item.id)" :key="item.id"></checkbox>
 			</li>
@@ -32,10 +32,12 @@
 				<span>{{pageNo * pageSize + ($index + 1)}}</span>
 			</li>
 			<li class="col-{{key}}" v-if="!headers.widths" v-for="key of headers.columns">
-				<span title="{{{key | getGridValue item[key] clz 'title'}}}">{{{key | getGridValue item[key] clz}}}</span>
+				<span title="{{key | getGridValue item[key] clz 'title'}}" v-if="isHTML(key)">{{{key | getGridValue item[key] clz}}}</span>
+				<span title="{{key | getGridValue item[key] clz 'title'}}" v-else>{{key | getGridValue item[key] clz}}</span>
 			</li>
 			<li class="col-{{key}}" :style="{width: headers.widths[$index]+'%'}" v-if="headers.widths" v-for="key of headers.columns">
-				<span title="{{{key | getGridValue item[key] clz 'title'}}}">{{{key | getGridValue item[key] clz}}}</span>
+				<span title="{{key | getGridValue item[key] clz 'title'}}" v-if="isHTML(key)">{{{key | getGridValue item[key] clz}}}</span>
+				<span title="{{key | getGridValue item[key] clz 'title'}}" v-else>{{key | getGridValue item[key] clz}}</span>
 			</li>
 			<li class="rt col-actions" v-if="item.actions">
 				<a class="btn act-{{action[0]}}" v-for="action of item.actions" title="{{action[1]}}" @click="action[2](item)"></a>
@@ -62,7 +64,8 @@
 	 * 		items: [			//表格显示数据
 	 * 			{id, name....}
 	 * 		],
-	 * 		selectArr,			//
+	 * 		html: [],			//用于显示html的列
+	 * 		selectArr,			//选中状态的ids数组
 	 * 		actions: [			//对于每一列表格元素的所有操作集合
 	 * 			[key, name, (item) => {...}]
 	 * 		]			
@@ -72,13 +75,43 @@
 		props: {
 			clz: String,
 			hasCheckbox: Boolean,
-			pageNo: Number,
-			pageSize: Number,
-			sequence: String,
+			pageNo: {
+				type: Number,
+				default: 0
+			},
+			pageSize: {
+				type: Number,
+				default: 20
+			},
+			sequence: {
+				type: String,
+				default: null
+			},
 			headers: Object,
-			items: Array,
-			actions: Array,
-			selectArr: Array
+			items: {
+				type: Array,
+				default () {
+					return [];
+				}
+			},
+			actions: {
+				type: Array,
+				default () {
+					return [];
+				}
+			},
+			selectArr: {
+				type: Array,
+				default () {
+					return [];
+				}
+			},
+			html: {
+				type: Array,
+				default () {
+					return [];
+				}
+			}
 		},
 		data () {
 			return {
@@ -104,6 +137,14 @@
 				if (_.indexOf(this.selectArr, id) > -1)
 					return true;
 				return false;
+			},
+			isHTML (key) {
+				if (!this.html.length)
+					return false;
+				return _.indexOf(this.html, key) > -1;
+			},
+			clickRow (item) {
+				this.$dispatch('click-row', event, item);
 			}
 		},
 		watch: {
@@ -129,7 +170,6 @@
 		}
 		ul.hdr{
 			background: #e8e8e8;
-			height: 31px;
 			border: 1px solid transparent;
 			a{
 				color: #333333;
@@ -140,7 +180,6 @@
 			}
 			[class^="col-"] {
 				border-right: 1px solid #fff;
-				height: 30px;
 			}
 			.col-_check{
 				padding-top: 1px;
@@ -151,9 +190,11 @@
 			text-align: left;
 			vertical-align: middle;
 			min-width: 56px;
-			height: 33px;
 			line-height: 35px;
 			padding: 0px 8px;
+			white-space:nowrap; 
+			text-overflow: ellipsis;
+			overflow: hidden;
 		}
 		.col-_check{
 			padding-top: 2px;

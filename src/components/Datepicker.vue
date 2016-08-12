@@ -1,13 +1,11 @@
 <template>
   <div class="datepicker">
-    <input class="form-control datepicker-input" :class="{'with-reset-button': showResetButton}" type="text"
+    <input class="form-control datepicker-input" type="text"
         v-bind:style="{width:width}"
         @click="inputClick"
         @keydown="inputKeydown"
         v-model="value"/>
-    <button v-if="showResetButton" type="button" class="close" @click="value = ''">
-      <span>&times;</span>
-    </button>
+    <span class="ico-dt" @click="inputClick"></span>
     <div class="datepicker-popup" v-show="displayDayView">
       <div class="datepicker-inner">
         <div class="datepicker-body">
@@ -104,10 +102,6 @@ export default {
     width: {
       type: String,
       default: '180px'
-    },
-    showResetButton: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -191,7 +185,7 @@ export default {
     checkDate () {
     	this.setTime()
     	this.value = this.stringify(this.currDate)
-    	this.$dispatch('check-date', this.key, this.value);
+    	this.$dispatch('check-date', this.key, this.value)
     	this.displayDayView = false
     },
     preNextDecadeClick(flag) {
@@ -391,20 +385,20 @@ export default {
 </script>
 
 <style lang="less">
-input.datepicker-input.with-reset-button {
+input.datepicker-input{
   padding-right: 25px;
+  cursor: pointer;
+  color: #428bca;
 }
-div.datepicker > button.close {
+.ico-dt{
+  cursor: pointer;
   position: absolute;
-  top: calc(20% - 7px);
-  right: 10px;
-}
-div.datepicker > button.close {
-  outline: none;
-  z-index: 2;
-}
-div.datepicker > button.close:focus {
-  opacity: .2;
+  right: 7px;
+  top: 7px;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(../assets/images/ixpic/dt-icon.png);
 }
 .datepicker{
     position: relative;
@@ -520,7 +514,7 @@ div.datepicker > button.close:focus {
 		width: 25px;
 		border: 1px solid #ccc;
 		height: 25px;
-		border-radius: 3px;
+		border-radius: 4px;
     transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
     &:focus{
       border-color: #66afe9;
@@ -567,15 +561,17 @@ div.datepicker > button.close:focus {
 		}
 	} */
 	.ok{
-		background: #00A2FF;
-		border: 1px solid #ccc;
+		background: #8fc31f;
+		border: 1px solid transparent;
 		color: #fff;
-		border-radius: 3px;
-		height: 28px;
-		width: 50px;
+		border-radius: 5px;
+		height: 25px;
+		width: 48px;
 		text-align: center;
+    margin-left: 7px;
+    cursor: pointer;
 		&:hover{
-			background: #3276b1;
+			background: #86b61d;
 		}
 	}
 }

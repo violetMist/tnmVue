@@ -1,6 +1,6 @@
 <template>
 <div class="dropdown">
-	<button class="dropdown-toggle" type="button" @click="open" data-key="{{key}}">
+	<button class="dropdown-toggle {{disabled ? 'disabled': ''}}" type="button" @click="open" data-key="{{key}}">
 		<span class="key-{{key}} btn">{{name}}</span>
 		<span class="split"></span>
 		<span class="pic-"></span>
@@ -13,7 +13,21 @@
 <script>
 	import EventListener from '../libs/EventListener.js';
 	export default {
-		props: ['key', 'name', 'value', 'list'],
+		props: {
+			key: null,
+			name: null,
+			value: null,
+			list: {
+				type: Array,
+				default () {
+					return [];
+				}
+			},
+			disabled: {
+				type: Boolean,
+				default: false
+			}
+		},
 		data () {
 			return {
 				showMenu: false
@@ -21,6 +35,7 @@
 		},
 		methods: {
 			open () {
+				if (this.disabled) return;
 				this.showMenu = !this.showMenu;
 			},
 			check (name, value) {
@@ -56,6 +71,7 @@
 			border-radius: 5px;
 			text-align: left;
 			cursor: pointer;
+			transition: border ease-in-out 0.15s;
 			&:hover{
 				border: 2px solid #55BDFE;
 				.split{
@@ -67,7 +83,6 @@
 				display: inline-block;
 			}
 			[class^="key-"] {
-				width: 200px;
 				height: 25px;
 				line-height: 25px;
 				margin-left: 3px;

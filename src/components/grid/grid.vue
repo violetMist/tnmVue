@@ -4,27 +4,6 @@
 	<div class="v-tools">
 		<div class="btn-{{$key}} btn {{$key == 'deleted'? isabled : ''}}" :data-key="$key" v-for="tool of tools" @click="toolFn($key, tool)"></div>
 		<slot name="tool-extend"></slot>
-		<div class="date-picker" v-if="datePicker">
-			<span>时间：</span>
-			<datepicker
-				key="from"
-			  	:value.sync="from"
-			  	:disabled-days-of-Week="disabled"
-			  	:format="format"
-			  	:show-reset-button="reset"
-			  	@check-date="checkDate"
-			></datepicker>
-			<span> --</span>
-			<datepicker
-				key="to"
-			  	:value.sync="to"
-			  	:disabled-days-of-Week="disabled"
-			  	:format="format"
-			  	:show-reset-button="reset"
-			  	@check-date="checkDate"
-			></datepicker>
-			<button class="okDate" @click="searchDate">查询</button>
-		</div>
 		<div class="search rt" v-if="search">
 			<input type="text" id="search" v-model="params.searchKey" @keyup="searchFn" placeholder="搜索" class="form-control">
 			<a class="grid-search btn" @click="searchFn"></a>
@@ -39,6 +18,7 @@
 			:page-no="params.pageNo"
 			:page-size="params.pageSize"
 			:items="items" 
+			:html="html"
 			:select-arr.sync="selectArr"
 			:actions="gridActions"
 			@check-box="getSelectArr"
@@ -70,7 +50,6 @@
 	 * 				
 	 * 			}
 	 * 		}				
-	 * 		datePicker,			//是否显示日历搜索
 	 * 		search,				//是否显示时搜索框
 	 * 		sequence,			//显示自动排序--名字
 	 * 		paginative,			//boolean
@@ -100,10 +79,6 @@
 				type: Boolean,
 				default: false
 			},
-			datePicker: {
-				type: Boolean,
-				default: false
-			},
 			search: {
 				type: Boolean,
 				default: false
@@ -119,7 +94,13 @@
 			tools: Object,
 			sequence: null,
 			headers: Object,
-			actions: Array,
+			actions: {
+				type: Array,
+				default () {
+					return [];
+				}
+			},
+			html: Array,
 			getData: Function
 		},
 		data () {
@@ -130,10 +111,7 @@
 					pageNo: 0,
 					pageSize: 20
 				},
-				selectArr: [],
-
-				format: "yyyy-MM-dd hh:mm",
-				reset: true
+				selectArr: []
 			};
 		},
 		computed: {
@@ -143,14 +121,6 @@
 					this.isabled = 'disabled';
 					this.selectArr = [];
 				});};
-			},
-			from () {
-				const now = new Date(new Date().getTime() - 24*60*60*90000);
-				return this.getDate(now);
-			},
-			to () {
-				const now = new Date(new Date().getTime() + 24*60*60*1000);
-				return this.getDate(now);
 			},
 			items () {
 				const _self = this;
@@ -187,9 +157,6 @@
 			}
 		},
 		methods: {
-			getDate (date) {
-				return date.toLocaleDateString().split("/").map((item, idx) => {if(idx>0) return ('0'+item).slice(-2); return item;}).join('-') + ' ' + '00:00';
-			},
 			getSelectArr () {
 				if (this.selectArr.length === 0) 
 					this.isabled = 'disabled';
@@ -208,15 +175,6 @@
 				if (event.type == 'click' || event.type == 'keyup' && event.key == 'Enter')
 					_self.cbFn();
 			},
-			checkDate (key, value) {
-				this.params[key] = new Date(value).getTime();
-			},
-			searchDate () {
-				const _self = this;
-				if (_self.params.from > _self.params.to)
-					return alert("开始时间不能超过结束时间");
-				_self.cbFn();
-			},
 			changePage (pageNo) {
 				const _self = this;
 				_self.params.pageNo = pageNo;
@@ -225,14 +183,9 @@
 		},
 		components: {
 			baseGrid,
-			datepicker,
 			pagination
 		},
 		ready () {
-			if (this.datePicker) {
-				this.params.from = new Date(this.from).getTime();
-				this.params.to = new Date(this.to).getTime();
-			}
 			if (!this.paginative) {
 				delete this.params.pageNo;
 				delete this.params.pageSize;
@@ -248,7 +201,6 @@
 	.v-grid{
 		.v-tools{
 			padding: 20px 10px 10px 20px;
-			height: 70px;
 			background: #fff;
 			[class^="btn-"] {
 				margin-right: 10px;
@@ -282,26 +234,6 @@
 					background-image: url(../../assets/images/pic/btn-delete-hover.png);
 				}
 			}
-			.date-picker{
-				display: inline-block;
-				color: #666;
-				vertical-align: top;
-				margin-top: 2px;
-			}
-			.okDate{
-				width: 50px;
-				height: 30px;
-				color: #fff;
-				margin-left: 5px;
-				cursor: pointer;
-				vertical-align: top;
-				background: #209bd5;
-				border: 1px solid #fff;
-				border-radius: 4px;
-				&:hover{
-					background: #0088d5;
-				}
-			}
 			.search{
 				height: 25px;
 				margin-right: 5px;
@@ -322,7 +254,7 @@
 		.v-body{
 			padding: 0 15px;
 			background: #fff;
-			min-height: 750px;
+			min-height: 820px;
 		}
 		.v-foot{
 			height: 45px;

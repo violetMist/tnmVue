@@ -67,7 +67,7 @@ window.setConst = (params) => {
         Const[key] = params[key];
     }
     //window中存项目用户权限
-    if (Const.userType == Const.Const.UserTypes.Super)
+    if (Const.userType == Const.Const.UserTypes.Super || Const.userType == Const.Const.UserTypes.Admin)
         window.Super = true;
 };
 
@@ -80,6 +80,7 @@ window.logoutView = () => {
     window.Super = null;
     router.go({ name: 'entry'});
 }
+
 let App = Vue.extend({
     store,
     components: {

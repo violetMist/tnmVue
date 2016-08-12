@@ -7,7 +7,7 @@
 			<ul v-if="unit">
 				<li class="pro-{{$key}} property" v-if="defaultFilter($key) && !isDropdown($key)" v-for="property of unit">
 					<label class="label" for="{{$key}}">{{$key | getDialogTitle property clz}} :</label>
-					<input :type="getInputType($key)" name="{{$key}}" v-model="property">
+					<input :class="{disabled: isDisabled($key)}" :disabled="isDisabled($key)" :type="getInputType($key)" name="{{$key}}" v-model="property">
 				</li>
 				<li class="pro-{{$key}} property" v-if="defaultFilter($key) && isDropdown($key)" v-for="property of unit">
 					<label class="label" for="{{$key}}">{{$key | getDialogTitle property clz}} :</label>
@@ -29,7 +29,7 @@
 				</li>
 				<li class="pro-{{property.key}} property" v-if="unit.properties && !property.type" v-for="property of unit.properties">
 					<label class="label" for="{{property.key}}">{{property.title}} :</label>
-					<input name="{{property.key}}" :type="getInputType(property.key)" v-model="property.value">
+					<input :class="{disabled: isDisabled(property.key)}" :disabled="isDisabled(property.key)" name="{{property.key}}" :type="getInputType(property.key)" v-model="property.value">
 				</li>
 				<li class="pro-{{property.key}} property" v-if="unit.properties && property.type == 'dropdown'" v-for="property of unit.properties">
 					<label class="label" for="{{property.key}}">{{property.title}} :</label>
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 		<div class="foot">
-			<a class="ok" @click="ok()"></a>
+			<a class="ok Enter" @click="ok()"></a>
 			<a class="cancel" @click="cancel()"></a>
 		</div>
 	</div>
@@ -102,6 +102,15 @@
 			}
 		},
 		methods: {
+			isDisabled (key) {
+				if (this.clz == 'edit-device') {
+					if (key == 'ip' || key == 'port')
+						return false;
+					else 
+						return true;
+				}
+				return false;
+			},
 			getInputType (key) {
 				let type = '';
 				this.inputTypes.forEach(item => {
@@ -197,8 +206,15 @@
 		border: 2px solid transparent;
 		border-radius: 5px;
 		text-indent: 10px;
+		transition: border ease-in-out 0.15s;
 		&:hover{
 			border: 2px solid #55BDFE;
+		}
+		&.disabled{
+			background: #e7ecf0;
+			&:hover{
+				border: 2px solid transparent;
+			}
 		}
 	}
 	.foot{

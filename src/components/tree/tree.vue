@@ -157,8 +157,6 @@
 		.t-body{
 			background: #334558;
 			border-radius: 0 0 5px 5px;
-			min-height: 865px;
-			max-height: 866px;
 			overflow-y: auto;
 			&::-webkit-scrollbar {
     			width: 12px;
