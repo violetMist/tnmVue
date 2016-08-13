@@ -3,8 +3,13 @@
 	<div class="title">实时告警</div>
 	<div class="content">
 		<ul class="bar-body">
-			<li v-for="fault of faultHT">
+			<li class="item" v-for="fault of faultHT">
 				<div class="fault-title">{{fault.date}} {{fault.week}}</div>
+				<div class="fault" v-for="item of fault.items" @click="toFaultFn(item)">
+					<span class="level-{{item.level}} lt"></span>
+					<span class="details">{{item.time}}&nbsp;{{item.siteName}}{{item.deviceType}}{{item.details}}</span>
+					<div class="bt-border"></div>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -36,7 +41,7 @@
 			toTime (date) {
 				return ('0'+date.getHours()).slice(-2) + ':' + ('0'+date.getMinutes()).slice(-2);
 			},
-			sortData (list) {
+			sortData (list, ht) {
 				//list = [{id, siteName, deviceType, details, level, time}]
 				const _self = this;
 				list.forEach((item, idx) => {
@@ -44,14 +49,14 @@
 					let dateStr = this.toDate(date);
 					let weekStr = this.toWeek(date);
 					let timeStr = this.toTime(date);
-					if (!this.faultHT[dateStr]) {
-						this.faultHT[dateStr] = {
+					if (!ht[dateStr]) {
+						ht[dateStr] = {
 							date: dateStr,
 							week: weekStr,
 							items: []
 						};
 					}
-					this.faultHT[dateStr].items.push({
+					ht[dateStr].items.push({
 						id: item.id,
 						siteName: item.siteName,
 						deviceType: item.deviceType,
@@ -60,13 +65,17 @@
 						time: timeStr
 					});
 				});
-				console.log(this.faultHT);
+			},
+			toFaultFn (item) {
+				
 			}
 		},
 		ready () {
 			const _self = this;
 			TNM.Global.common('rtFaults', {}, (result) => {
-				_self.sortData(result);
+				let ht = {};
+				_self.sortData(result, ht);
+				_self.faultHT = ht;
 			});
 		}
 	};
@@ -95,7 +104,39 @@
 			border-bottom: 45px solid transparent;
 		}
 		.bar-body{
-			padding: 0 10px 10px 20px;
+			padding: 0 10px 10px 10px;
+			color: #666;
+			.fault-title{
+				text-align: center;
+				margin: 20px 0 10px 0;
+			}
+			.fault{
+				.level-1, .level-2{
+					width: 14px;
+					height: 14px;
+					margin-top: 3px;
+				}
+				.level-1{
+					background: #ffde00;
+				}
+				.level-2{
+					background: #e93f33;
+				}
+				.details{
+					margin-left: 24px;
+					display: block;
+					line-height: 16px;
+					margin-top: 10px;
+					cursor: pointer;
+					&:hover{
+						color: #00d4de;
+					}
+				}
+				.bt-border{
+					border-top: 1px dotted #ddd;
+					margin: 5px 5px 0 24px;
+				}
+			}
 		}
 	}
 </style>

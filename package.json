@@ -1,7 +1,7 @@
 {
-  "name": "TCM-Vue",
+  "name": "TNM-Vue",
   "version": "1.0.0",
-  "description": "用Vue.js 重写TCM",
+  "description": "用Vue.js 重写TNM",
   "main": "index.html",
   "scripts": {
     "start": "npm run dist && npm run server && start http://localhost:8090",

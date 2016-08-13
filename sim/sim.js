@@ -86,16 +86,28 @@ let FaultDetails = [
 ];
 
 Test.rtFaults = (params) => {
-	return _.map(new Array(_.random(0, 100)), (item, idx) => {
+	return _.map(new Array(_.random(0, 200)), (item, idx) => {
 		return {
 			id: idx, 
 			siteName: siteNames[_.random(0, siteNames.length-1)],
 			deviceType: DeviceTypeNames[numArr[_.random(0, numArr.length-1)]],
 			details: FaultDetails[_.random(0, FaultDetails.length-1)],
 			level: _.random(1, 2),
-			time: new Date().getTime() - (60*60*1000*idx)
+			time: new Date().getTime() - (13*60*1000*idx)
 		};
 	});
+};
+let _idx = 200;
+Test.newFault = (params) => {
+	_idx++;
+	return {
+		id: _idx, 
+		siteName: siteNames[_.random(0, siteNames.length-1)],
+		deviceType: DeviceTypeNames[numArr[_.random(0, numArr.length-1)]],
+		details: FaultDetails[_.random(0, FaultDetails.length-1)],
+		level: _.random(1, 2),
+		time: new Date().getTime()
+	};
 };
 
 
@@ -509,102 +521,4 @@ Test.getCameraList = (params) => {
 		}
 	});
 	return getData2Grid(params, Cameras);
-};
-
-/*************电视墙/存储管理***************/
-Test.getLineTree = (params) => {
-	return {
-		id: -2,
-		children: _.map(Sites, (site, idx) => {
-			return {id: site.id, name: site.name};
-		})
-	}
-};
-
-Test.getVideoList = (params) => {
-	let arr = null;
-	if (params.siteId) 
-		arr = new Array(params.siteId+1);
-	 else 
-		arr = '123'.split('');
-	return _.map(arr, (item, idx) => {
-		return {
-			id: idx+1, 
-			name: '电视墙'+idx, 
-			monitor: {
-				name: '监视器'+idx, 
-				style: '大华'
-			}, 
-			decoder: {
-				name: '解码器'+idx, 
-				style: '海信'
-			}
-		};
-	});
-};
-
-Test.getVideo = (params) => {
-	return {
-		id: 1,
-		monitor: params.id ? 1: '',
-		decoder: params.id ? 2: '',
-		port: params.id ? 1: '',
-		monitorList: _.map(new Array(5), (item, idx) => {
-			return {value: idx, name: '监视器' + (idx+1)};
-		}),
-		decoderList: _.map(new Array(10), (item, idx) => {
-			return {value: idx, name: '解码器' + (idx+1), ports: _.map(new Array(_.random(1, 8)), (id, index) => {
-				return index + 1;
-			})};
-		})
-	};
-};
-
-Test.editVideo = (params) => {
-
-};
-
-Test.addVideo = (params) => {
-
-};
-
-Test.deleteVideo = (params) => {
-	
-};
-
-Test.getPlanList = (params) => {
-	let arr = null;
-	if (params.siteId) 
-		arr = new Array(params.siteId+1);
-	 else 
-		arr = '123'.split('');
-	return _.map(arr, (item, idx) => {
-		return {
-			id: idx+1, 
-			name: '存储计划'+idx, 
-			storage: '存储服务器'+idx,
-			circle: [7, 15, 30][_.random(0, 2)],
-			days: [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5, 6, 0], [0, 6]][_.random(0, 2)],
-			from: '00:00',
-			to: '24:00'
-		};
-	});
-};
-
-Test.getPlan = (params) => {
-	return {
-		id: params.id || 1,
-		name: '存储计划-1',
-		siteName: '西直门',
-		circle: [7, 15, 30][_.random(0, 2)],
-		from: '00:00',
-		to: '24:00',
-		storage: 1,
-		storageList: _.map('123'.split(''), (storage, idx) => {
-			return {id: idx, name: '存储服务器-'+idx};
-		}),
-		deviceName: '摄像机',
-		cameras: [],
-		freeCameras: []
-	};
 };
